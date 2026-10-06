@@ -1,0 +1,2717 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIAJA | Agencia de viajes</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f6f8f6;
+    color:#26352f;
+}
+
+header{
+    height:82px;
+    background:white;
+    border-bottom:1px solid #dfe7e2;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 5%;
+}
+
+.logo{
+    font-size:27px;
+    font-weight:700;
+    letter-spacing:2px;
+    color:#315b4d;
+}
+
+nav{
+    display:flex;
+    gap:30px;
+}
+
+nav a{
+    text-decoration:none;
+    color:#52645c;
+    font-size:15px;
+}
+
+nav a:hover{
+    color:#315b4d;
+}
+
+.search-section{
+    width:90%;
+    max-width:1250px;
+    margin:20% auto 0;
+}
+
+.search-card{
+    background:white;
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 8px 30px rgba(42,70,58,.10);
+    border:1px solid #e2e9e5;
+}
+
+.main-search{
+    display:grid;
+    grid-template-columns:1fr 1fr 2.4fr 1fr 1fr auto;
+    gap:12px;
+    align-items:end;
+}
+
+.field,
+.popup-field,
+.date-field{
+    position:relative;
+}
+
+.field-label{
+    display:block;
+    font-size:12px;
+    font-weight:bold;
+    color:#718078;
+    margin:0 0 7px 4px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.input-box{
+    height:58px;
+    border:1px solid #d6e0da;
+    border-radius:12px;
+    background:#fbfcfb;
+    display:flex;
+    align-items:center;
+    padding:0 15px;
+    transition:.2s;
+}
+
+.input-box:focus-within{
+    border-color:#527d6d;
+    background:white;
+    box-shadow:0 0 0 3px rgba(82,125,109,.10);
+}
+
+.input-box input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:transparent;
+    color:#26352f;
+    font-size:15px;
+}
+
+.input-box input::placeholder{
+    color:#8b9892;
+}
+
+/* SUGERENCIAS */
+
+.suggestions{
+    position:absolute;
+    top:88px;
+    left:0;
+    right:0;
+    background:white;
+    border:1px solid #dce5df;
+    border-radius:12px;
+    box-shadow:0 10px 25px rgba(0,0,0,.10);
+    overflow:hidden;
+    z-index:1000;
+    display:none;
+}
+
+.suggestions.show{
+    display:block;
+}
+
+.suggestion{
+    padding:13px 15px;
+    cursor:pointer;
+    border-bottom:1px solid #edf1ee;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.suggestion:hover{
+    background:#eef5f1;
+}
+
+.suggestion strong{
+    display:block;
+    font-size:14px;
+    color:#2d4138;
+}
+
+.suggestion span{
+    font-size:12px;
+    color:#84918b;
+}
+
+/* FECHAS */
+
+.date-mode{
+    display:flex;
+    gap:8px;
+    margin-bottom:10px;
+}
+
+.date-mode button{
+    border:1px solid #d2ddd7;
+    background:#f3f6f4;
+    color:#63736c;
+    padding:11px 17px;
+    border-radius:9px;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.date-mode button.selected{
+    background:#527d6d;
+    color:white;
+    border-color:#527d6d;
+    box-shadow:0 3px 8px rgba(82,125,109,.20);
+}
+
+.date-options{
+    display:none;
+    gap:7px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+}
+
+.date-options.show{
+    display:flex;
+}
+
+.date-option{
+    border:1px solid #d3dfd8;
+    background:white;
+    color:#52645c;
+    padding:8px 11px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.date-option.selected{
+    background:#e4f0e9;
+    border-color:#527d6d;
+    color:#315b4d;
+    font-weight:bold;
+}
+
+.date-boxes{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.date-box{
+    height:58px;
+    border:1px solid #d6e0da;
+    border-radius:12px;
+    background:#fbfcfb;
+    padding:10px 13px;
+    cursor:pointer;
+}
+
+.date-box.active{
+    border:2px solid #527d6d;
+    background:#f3f8f5;
+}
+
+.date-title{
+    display:block;
+    font-size:10px;
+    text-transform:uppercase;
+    color:#87938d;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.date-value{
+    font-size:14px;
+    color:#33463e;
+    font-weight:600;
+}
+
+/* SELECTOR DE MESES */
+
+.month-selector{
+    display:none;
+    position:absolute;
+    top:145px;
+    left:0;
+    width:350px;
+    background:white;
+    border:1px solid #dce5df;
+    border-radius:15px;
+    padding:17px;
+    box-shadow:0 15px 35px rgba(0,0,0,.13);
+    z-index:1000;
+}
+
+.month-selector.show{
+    display:block;
+}
+
+.multi-date-field{
+    position:relative;
+}
+
+.multi-date-field .calendar{
+    top:145px;
+    left:0;
+}
+
+.month-selector h3{
+    font-size:14px;
+    color:#315b4d;
+    margin-bottom:13px;
+}
+
+.month-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:7px;
+}
+
+.month{
+    border:1px solid #d5e0d9;
+    background:#fafcfb;
+    padding:11px 5px;
+    border-radius:8px;
+    cursor:pointer;
+    color:#52645c;
+}
+
+.month:hover,
+.month.selected{
+    background:#527d6d;
+    border-color:#527d6d;
+    color:white;
+}
+
+/* CALENDARIO */
+
+.calendar{
+    position:absolute;
+    top:145px;
+    left:0;
+    width:360px;
+    background:white;
+    border:1px solid #dce5df;
+    border-radius:15px;
+    padding:16px;
+    box-shadow:0 15px 35px rgba(0,0,0,.13);
+    z-index:900;
+    display:none;
+}
+
+.calendar.show{
+    display:block;
+}
+
+.calendar-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.calendar-head button{
+    border:none;
+    background:#eef3f0;
+    width:34px;
+    height:34px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:17px;
+}
+
+.calendar-month{
+    font-size:15px;
+    font-weight:bold;
+    color:#315b4d;
+}
+
+.weekdays,
+.calendar-grid{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:4px;
+}
+
+.weekdays div{
+    text-align:center;
+    font-size:10px;
+    color:#89958f;
+    font-weight:bold;
+    padding-bottom:6px;
+}
+
+.day{
+    height:38px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:13px;
+}
+
+.day:hover{
+    background:#edf4f0;
+}
+
+.day.disabled{
+    color:#cbd2ce;
+    cursor:default;
+}
+
+.day.today{
+    border:1px solid #8aa99a;
+}
+
+.day.selected{
+    background:#527d6d;
+    color:white;
+    font-weight:bold;
+}
+
+.day.in-range{
+    background:#e2eee8;
+    color:#315b4d;
+}
+
+/* POPUPS */
+
+.popup{
+    position:absolute;
+    top:88px;
+    right:0;
+    width:360px;
+    max-height:75vh;
+    overflow-y:auto;
+    background:white;
+    border:1px solid #dce5df;
+    border-radius:14px;
+    padding:16px;
+    box-shadow:0 15px 35px rgba(0,0,0,.13);
+    z-index:950;
+    display:none;
+}
+
+.popup.show{
+    display:block;
+}
+
+.popup-input{
+    height:58px;
+    border:1px solid #d6e0da;
+    border-radius:12px;
+    background:#fbfcfb;
+    display:flex;
+    align-items:center;
+    padding:0 15px;
+    cursor:pointer;
+}
+
+.popup-input:hover{
+    border-color:#527d6d;
+}
+
+.counter-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:11px 0;
+    border-bottom:1px solid #edf1ee;
+}
+
+.counter-row:last-child{
+    border-bottom:none;
+}
+
+.counter-title strong{
+    display:block;
+    font-size:14px;
+}
+
+.counter-title span{
+    display:block;
+    font-size:11px;
+    color:#8a9690;
+    margin-top:3px;
+}
+
+.counter{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.counter button{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    border:1px solid #cdd9d2;
+    background:white;
+    color:#315b4d;
+    cursor:pointer;
+    font-size:17px;
+}
+
+.counter-number{
+    min-width:20px;
+    text-align:center;
+    font-weight:bold;
+}
+
+/* NIÑOS */
+
+.children-ages{
+    display:none;
+    margin-top:12px;
+    padding-top:10px;
+    border-top:1px solid #e3ebe6;
+}
+
+.children-ages.show{
+    display:block;
+}
+
+.age-row{
+    margin-bottom:10px;
+}
+
+.age-row label{
+    display:block;
+    font-size:12px;
+    font-weight:bold;
+    color:#52645c;
+    margin-bottom:5px;
+}
+
+.age-row select{
+    width:100%;
+    height:38px;
+    border:1px solid #d3dfd8;
+    border-radius:8px;
+    padding:0 9px;
+    background:white;
+    color:#315b4d;
+}
+
+/* HABITACIONES */
+
+.room-config{
+    display:none;
+    margin-top:12px;
+}
+
+.room-config.show{
+    display:block;
+}
+
+.room-card{
+    border:1px solid #dce5df;
+    border-radius:11px;
+    padding:12px;
+    margin-bottom:10px;
+    background:#fafcfb;
+}
+
+.room-card h4{
+    color:#315b4d;
+    font-size:13px;
+    margin-bottom:8px;
+}
+
+.room-card .counter-row{
+    padding:7px 0;
+}
+
+.room-card .children-ages{
+    display:block;
+}
+
+.room-age-title{
+    font-size:11px;
+    color:#718078;
+    margin:8px 0 5px;
+}
+
+.room-age{
+    width:100%;
+    height:35px;
+    border:1px solid #d3dfd8;
+    border-radius:7px;
+    padding:0 7px;
+}
+
+/* BUSCAR */
+
+.search-button{
+    height:58px;
+    border:none;
+    border-radius:12px;
+    padding:0 24px;
+    background:#315b4d;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.search-button:hover{
+    background:#264b3f;
+}
+
+.search-button:disabled{
+    background:#b9c5bf;
+    cursor:not-allowed;
+}
+
+/* MULTIDESTINO */
+
+.multi{
+    margin-top:18px;
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-size:13px;
+    color:#5f7068;
+}
+
+.multi input{
+    width:17px;
+    height:17px;
+    accent-color:#527d6d;
+}
+
+.multi-trip{
+    margin-top:18px;
+    padding-top:18px;
+    border-top:1px solid #e3eae6;
+    display:none;
+}
+
+.multi-trip.show{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:12px;
+}
+
+/* HERO */
+
+.hero{
+    width:90%;
+    max-width:1250px;
+    height:330px;
+    margin:30px auto;
+    border-radius:20px;
+    background:
+        linear-gradient(rgba(30,55,45,.20),rgba(30,55,45,.20)),
+        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80")
+        center/cover;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    text-align:center;
+}
+
+.hero h1{
+    font-size:42px;
+    text-shadow:0 3px 15px rgba(0,0,0,.3);
+}
+
+.destinations{
+    width:90%;
+    max-width:1250px;
+    margin:50px auto;
+}
+
+.destinations h2{
+    color:#315b4d;
+    margin-bottom:20px;
+}
+
+.destination-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.destination-card{
+    height:170px;
+    border-radius:16px;
+    background:#dfe9e3;
+    display:flex;
+    align-items:flex-end;
+    padding:20px;
+    color:#263b32;
+    font-size:20px;
+    font-weight:bold;
+}
+
+@media(max-width:1100px){
+
+    .main-search{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .date-field{
+        grid-column:span 2;
+    }
+
+    .search-button{
+        width:100%;
+    }
+
+    .destination-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:650px){
+
+    header{
+        padding:0 20px;
+    }
+
+    nav{
+        display:none;
+    }
+
+    .search-section{
+        margin-top:40px;
+    }
+
+    .main-search{
+        grid-template-columns:1fr;
+    }
+
+    .date-field{
+        grid-column:auto;
+    }
+
+    .calendar,
+    .month-selector{
+        width:100%;
+    }
+
+    .destination-grid{
+        grid-template-columns:1fr;
+    }
+
+    .multi-trip.show{
+        grid-template-columns:1fr;
+    }
+}
+
+.other-days-selector{
+    margin-top:10px;
+    padding:10px 12px;
+    border-radius:12px;
+    background:#f6f8f6;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+.other-days-selector label{
+    font-size:14px;
+    font-weight:600;
+}
+.other-days-selector select{
+    padding:8px 10px;
+    border:1px solid #d6ded9;
+    border-radius:8px;
+    background:#fff;
+    font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">VIAJA</div>
+
+    <nav>
+        <a href="#">Inicio</a>
+        <a href="#">Ofertas</a>
+        <a href="#">Destinos</a>
+        <a href="#">Inspiración</a>
+        <a href="#">Ayuda</a>
+    </nav>
+
+</header>
+
+
+<section class="search-section">
+
+<div class="search-card">
+
+<div class="main-search">
+
+<!-- ORIGEN -->
+
+<div class="field">
+
+<label class="field-label">Origen</label>
+
+<div class="input-box">
+<input
+    type="text"
+    id="originInput"
+    placeholder="¿Desde dónde?"
+    autocomplete="off">
+</div>
+
+<div class="suggestions" id="originSuggestions"></div>
+
+</div>
+
+
+<!-- DESTINO -->
+
+<div class="field">
+
+<label class="field-label">Destino</label>
+
+<div class="input-box">
+<input
+    type="text"
+    id="destinationInput"
+    placeholder="¿A dónde quieres ir?"
+    autocomplete="off">
+</div>
+
+<div class="suggestions" id="destinationSuggestions"></div>
+
+</div>
+
+
+<!-- FECHAS -->
+
+<div class="date-field">
+
+<div class="date-mode">
+
+<button
+    id="concreteDates"
+    class="selected"
+    type="button">
+    Fechas concretas
+</button>
+
+<button
+    id="flexibleDates"
+    type="button">
+    Fechas flexibles
+</button>
+
+</div>
+
+
+<!-- OPCIONES FLEXIBLES -->
+
+<div class="date-options" id="flexibleOptions">
+
+<button class="date-option" data-flex="weekend">
+    Un finde
+</button>
+
+<button class="date-option" data-flex="week">
+    1 semana
+</button>
+
+<button class="date-option" data-flex="month">
+    1 mes
+</button>
+
+<button class="date-option" data-flex="other" id="otherDaysOption">
+    Otro
+</button>
+
+<button class="date-option" id="chooseMonth">
+    ¿Qué mes quieres ir?
+</button>
+
+<div class="other-days-selector" id="otherDaysSelector" style="display:none;">
+    <label for="otherDays">Número de días</label>
+    <select id="otherDays">
+        <option value="">Seleccionar días</option>
+        <option value="0">0 días</option>
+<option value="1">1 días</option>
+<option value="2">2 días</option>
+<option value="3">3 días</option>
+<option value="4">4 días</option>
+<option value="5">5 días</option>
+<option value="6">6 días</option>
+<option value="7">7 días</option>
+<option value="8">8 días</option>
+<option value="9">9 días</option>
+<option value="10">10 días</option>
+<option value="11">11 días</option>
+<option value="12">12 días</option>
+<option value="13">13 días</option>
+<option value="14">14 días</option>
+<option value="15">15 días</option>
+<option value="16">16 días</option>
+<option value="17">17 días</option>
+<option value="18">18 días</option>
+<option value="19">19 días</option>
+<option value="20">20 días</option>
+<option value="21">21 días</option>
+<option value="22">22 días</option>
+<option value="23">23 días</option>
+<option value="24">24 días</option>
+<option value="25">25 días</option>
+<option value="26">26 días</option>
+<option value="27">27 días</option>
+<option value="28">28 días</option>
+<option value="29">29 días</option>
+<option value="30">30 días</option>
+
+    </select>
+</div>
+
+</div>
+
+
+<div id="concreteDateBoxes">
+<label class="field-label">Fechas</label>
+
+<div class="date-boxes">
+
+<div class="date-box active" id="departureBox">
+
+<span class="date-title">Ida</span>
+
+<span
+    class="date-value"
+    id="departureText">
+    Seleccionar
+</span>
+
+</div>
+
+
+<div class="date-box" id="returnBox">
+
+<span class="date-title">Vuelta</span>
+
+<span
+    class="date-value"
+    id="returnText">
+    Seleccionar
+</span>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- CALENDARIO -->
+
+<div class="calendar" id="calendar">
+
+<div class="calendar-head">
+
+<button id="prevMonth">‹</button>
+
+<div
+    class="calendar-month"
+    id="calendarMonth">
+</div>
+
+<button id="nextMonth">›</button>
+
+</div>
+
+<div class="weekdays">
+<div>L</div>
+<div>M</div>
+<div>X</div>
+<div>J</div>
+<div>V</div>
+<div>S</div>
+<div>D</div>
+</div>
+
+<div
+    class="calendar-grid"
+    id="calendarGrid">
+</div>
+
+</div>
+
+
+<!-- MESES -->
+
+<div
+    class="month-selector"
+    id="monthSelector">
+
+<h3>¿En qué mes quieres viajar?</h3>
+
+<div class="month-grid">
+
+<button class="month" data-month="0">Enero</button>
+<button class="month" data-month="1">Febrero</button>
+<button class="month" data-month="2">Marzo</button>
+<button class="month" data-month="3">Abril</button>
+<button class="month" data-month="4">Mayo</button>
+<button class="month" data-month="5">Junio</button>
+<button class="month" data-month="6">Julio</button>
+<button class="month" data-month="7">Agosto</button>
+<button class="month" data-month="8">Septiembre</button>
+<button class="month" data-month="9">Octubre</button>
+<button class="month" data-month="10">Noviembre</button>
+<button class="month" data-month="11">Diciembre</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- HABITACIONES -->
+
+<div class="popup-field">
+
+<label class="field-label">
+Habitaciones
+</label>
+
+<div
+    class="popup-input"
+    id="roomsInput">
+
+<strong>
+<span id="roomsText">
+1 habitación
+</span>
+</strong>
+
+</div>
+
+
+<div
+    class="popup"
+    id="roomsPopup">
+
+<div class="counter-row">
+
+<div class="counter-title">
+
+<strong>Habitaciones</strong>
+
+<span>
+Número de habitaciones
+</span>
+
+</div>
+
+<div class="counter">
+
+<button id="roomsMinus">−</button>
+
+<span
+    class="counter-number"
+    id="roomsNumber">
+    1
+</span>
+
+<button id="roomsPlus">+</button>
+
+</div>
+
+</div>
+
+
+<div
+    class="room-config"
+    id="roomConfig">
+</div>
+
+</div>
+
+</div>
+
+
+<!-- BUSCAR -->
+
+<button
+    class="search-button"
+    id="searchButton"
+    disabled>
+
+Continuar
+
+</button>
+
+</div>
+
+
+<!-- MULTIDESTINO -->
+
+<label class="multi">
+
+<input
+    type="checkbox"
+    id="multiDestination">
+
+<span>
+Quiero realizar un viaje multidestino
+</span>
+
+</label>
+
+
+<div
+    class="multi-trip"
+    id="multiTrip">
+
+<div class="field">
+
+<label class="field-label">
+Origen
+</label>
+
+<div class="input-box">
+<input
+    type="text"
+    id="origin2"
+    placeholder="¿Desde dónde?"
+    autocomplete="off">
+</div>
+<div class="suggestions" id="origin2Suggestions"></div>
+
+</div>
+
+
+<div class="field">
+
+<label class="field-label">
+Destino
+</label>
+
+<div class="input-box">
+<input
+    type="text"
+    id="destination2"
+    placeholder="¿A dónde?"
+    autocomplete="off">
+</div>
+<div class="suggestions" id="destination2Suggestions"></div>
+
+</div>
+
+
+<div class="field multi-date-field">
+
+<div class="date-mode">
+
+<button
+    id="concreteDates2"
+    class="selected"
+    type="button">
+    Fechas concretas
+</button>
+
+<button
+    id="flexibleDates2"
+    type="button">
+    Fechas flexibles
+</button>
+
+</div>
+
+<div class="date-options" id="flexibleOptions2">
+
+<button class="date-option" data-flex2="weekend">
+    Un finde
+</button>
+
+<button class="date-option" data-flex2="week">
+    1 semana
+</button>
+
+<button class="date-option" data-flex2="month">
+    1 mes
+</button>
+
+<button class="date-option" data-flex2="other" id="otherDaysOption2">
+    Otro
+</button>
+
+<button class="date-option" id="chooseMonth2">
+    ¿Qué mes quieres ir?
+</button>
+
+<div class="other-days-selector" id="otherDaysSelector2" style="display:none;">
+    <label for="otherDays2">Número de días</label>
+    <select id="otherDays2">
+        <option value="">Seleccionar días</option>
+        <option value="0">0 días</option>
+<option value="1">1 días</option>
+<option value="2">2 días</option>
+<option value="3">3 días</option>
+<option value="4">4 días</option>
+<option value="5">5 días</option>
+<option value="6">6 días</option>
+<option value="7">7 días</option>
+<option value="8">8 días</option>
+<option value="9">9 días</option>
+<option value="10">10 días</option>
+<option value="11">11 días</option>
+<option value="12">12 días</option>
+<option value="13">13 días</option>
+<option value="14">14 días</option>
+<option value="15">15 días</option>
+<option value="16">16 días</option>
+<option value="17">17 días</option>
+<option value="18">18 días</option>
+<option value="19">19 días</option>
+<option value="20">20 días</option>
+<option value="21">21 días</option>
+<option value="22">22 días</option>
+<option value="23">23 días</option>
+<option value="24">24 días</option>
+<option value="25">25 días</option>
+<option value="26">26 días</option>
+<option value="27">27 días</option>
+<option value="28">28 días</option>
+<option value="29">29 días</option>
+<option value="30">30 días</option>
+
+    </select>
+</div>
+
+</div>
+
+<div id="concreteDate2Box">
+<label class="field-label">Fechas</label>
+
+<div class="date-boxes">
+
+<div class="date-box active" id="departureBox2">
+<span class="date-title">Ida</span>
+<span class="date-value" id="departureText2">Seleccionar</span>
+</div>
+
+<div class="date-box" id="returnBox2">
+<span class="date-title">Vuelta</span>
+<span class="date-value" id="returnText2">Seleccionar</span>
+</div>
+
+</div>
+</div>
+
+<div class="month-selector" id="monthSelector2">
+<h3>¿En qué mes quieres viajar?</h3>
+<div class="month-grid">
+<button class="month" data-month2="0">Enero</button>
+<button class="month" data-month2="1">Febrero</button>
+<button class="month" data-month2="2">Marzo</button>
+<button class="month" data-month2="3">Abril</button>
+<button class="month" data-month2="4">Mayo</button>
+<button class="month" data-month2="5">Junio</button>
+<button class="month" data-month2="6">Julio</button>
+<button class="month" data-month2="7">Agosto</button>
+<button class="month" data-month2="8">Septiembre</button>
+<button class="month" data-month2="9">Octubre</button>
+<button class="month" data-month2="10">Noviembre</button>
+<button class="month" data-month2="11">Diciembre</button>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="hero">
+
+<h1>
+Descubre tu próximo viaje
+</h1>
+
+</section>
+
+
+<section class="destinations">
+
+<h2>
+Destinos populares
+</h2>
+
+<div class="destination-grid">
+
+<div class="destination-card">
+Roma
+</div>
+
+<div class="destination-card">
+París
+</div>
+
+<div class="destination-card">
+Londres
+</div>
+
+<div class="destination-card">
+Nueva York
+</div>
+
+</div>
+
+</section>
+
+
+<script>
+
+/* =====================================================
+   DESTINOS
+===================================================== */
+
+const places = [
+
+["Valencia","España","VLC"],
+["Madrid","España","MAD"],
+["Barcelona","España","BCN"],
+["Alicante","España","ALC"],
+["Sevilla","España","SVQ"],
+["Málaga","España","AGP"],
+["Palma de Mallorca","España","PMI"],
+["Ibiza","España","IBZ"],
+["Tenerife","España","TFS"],
+["Gran Canaria","España","LPA"],
+["Bilbao","España","BIO"],
+["Santiago de Compostela","España","SCQ"],
+["Asturias","España","OVD"],
+["Vigo","España","VGO"],
+["A Coruña","España","LCG"],
+["Granada","España","GRX"],
+["Menorca","España","MAH"],
+["Lanzarote","España","ACE"],
+["Fuerteventura","España","FUE"],
+["Lisboa","Portugal","LIS"],
+["Oporto","Portugal","OPO"],
+["Faro","Portugal","FAO"],
+["París","Francia","CDG"],
+["Niza","Francia","NCE"],
+["Marsella","Francia","MRS"],
+["Lyon","Francia","LYS"],
+["Roma","Italia","FCO"],
+["Milán","Italia","MXP"],
+["Venecia","Italia","VCE"],
+["Florencia","Italia","FLR"],
+["Nápoles","Italia","NAP"],
+["Bolonia","Italia","BLQ"],
+["Londres","Reino Unido","LHR"],
+["Manchester","Reino Unido","MAN"],
+["Edimburgo","Reino Unido","EDI"],
+["Liverpool","Reino Unido","LPL"],
+["Ámsterdam","Países Bajos","AMS"],
+["Bruselas","Bélgica","BRU"],
+["Berlín","Alemania","BER"],
+["Múnich","Alemania","MUC"],
+["Frankfurt","Alemania","FRA"],
+["Viena","Austria","VIE"],
+["Praga","República Checa","PRG"],
+["Budapest","Hungría","BUD"],
+["Atenas","Grecia","ATH"],
+["Dublín","Irlanda","DUB"],
+["Copenhague","Dinamarca","CPH"],
+["Estocolmo","Suecia","ARN"],
+["Oslo","Noruega","OSL"],
+["Zúrich","Suiza","ZRH"],
+["Ginebra","Suiza","GVA"],
+["Varsovia","Polonia","WAW"],
+["Cracovia","Polonia","KRK"],
+["Bucarest","Rumanía","OTP"],
+["Sofía","Bulgaria","SOF"],
+["Dubrovnik","Croacia","DBV"],
+["Estambul","Turquía","IST"],
+["Nueva York","Estados Unidos","JFK"],
+["Miami","Estados Unidos","MIA"],
+["Los Ángeles","Estados Unidos","LAX"],
+["San Francisco","Estados Unidos","SFO"],
+["Chicago","Estados Unidos","ORD"],
+["Las Vegas","Estados Unidos","LAS"],
+["Boston","Estados Unidos","BOS"],
+["Toronto","Canadá","YYZ"],
+["Montreal","Canadá","YUL"],
+["Vancouver","Canadá","YVR"],
+["Ciudad de México","México","MEX"],
+["Cancún","México","CUN"],
+["Punta Cana","República Dominicana","PUJ"],
+["La Habana","Cuba","HAV"],
+["Bogotá","Colombia","BOG"],
+["Medellín","Colombia","MDE"],
+["Lima","Perú","LIM"],
+["Buenos Aires","Argentina","EZE"],
+["Santiago de Chile","Chile","SCL"],
+["Río de Janeiro","Brasil","GIG"],
+["São Paulo","Brasil","GRU"],
+["Tokio","Japón","HND"],
+["Osaka","Japón","KIX"],
+["Pekín","China","PEK"],
+["Shanghái","China","PVG"],
+["Hong Kong","China","HKG"],
+["Bangkok","Tailandia","BKK"],
+["Phuket","Tailandia","HKT"],
+["Singapur","Singapur","SIN"],
+["Bali","Indonesia","DPS"],
+["Seúl","Corea del Sur","ICN"],
+["Dubái","Emiratos Árabes Unidos","DXB"],
+["Abu Dabi","Emiratos Árabes Unidos","AUH"],
+["Doha","Catar","DOH"],
+["Maldivas","Maldivas","MLE"],
+["Marrakech","Marruecos","RAK"],
+["Casablanca","Marruecos","CMN"],
+["El Cairo","Egipto","CAI"],
+["Túnez","Túnez","TUN"],
+["Ciudad del Cabo","Sudáfrica","CPT"],
+["Johannesburgo","Sudáfrica","JNB"],
+["Sídney","Australia","SYD"],
+["Melbourne","Australia","MEL"],
+["Auckland","Nueva Zelanda","AKL"]
+
+];
+
+
+/* =====================================================
+   AUTOCOMPLETADO
+===================================================== */
+
+function normalizeText(text){
+
+    return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"");
+
+}
+
+
+function setupAutocomplete(inputId,suggestionsId){
+
+    const input=document.getElementById(inputId);
+    const box=document.getElementById(suggestionsId);
+
+    if(!input || !box) return;
+
+    input.addEventListener("input",function(){
+
+        const query=normalizeText(input.value.trim());
+
+        box.innerHTML="";
+
+        if(!query){
+
+            box.classList.remove("show");
+            updateSearchButton();
+            return;
+
+        }
+
+        const results=places
+        .filter(place=>{
+
+            return normalizeText(place[0]).includes(query) ||
+                   normalizeText(place[1]).includes(query) ||
+                   normalizeText(place[2]).includes(query);
+
+        })
+        .slice(0,8);
+
+        results.forEach(place=>{
+
+            const item=document.createElement("div");
+
+            item.className="suggestion";
+
+            item.innerHTML=`
+                <div>
+                    <strong>${place[0]}</strong>
+                    <span>${place[1]}</span>
+                </div>
+                <span>${place[2]}</span>
+            `;
+
+            item.addEventListener("mousedown",function(e){
+
+                e.preventDefault();
+
+                input.value=`${place[0]} (${place[2]})`;
+
+                box.classList.remove("show");
+
+                updateSearchButton();
+
+            });
+
+            box.appendChild(item);
+
+        });
+
+        if(results.length){
+            box.classList.add("show");
+        }
+
+        updateSearchButton();
+
+    });
+
+    input.addEventListener("blur",function(){
+
+        setTimeout(()=>{
+            box.classList.remove("show");
+        },150);
+
+    });
+
+}
+
+
+setupAutocomplete("originInput","originSuggestions");
+setupAutocomplete("destinationInput","destinationSuggestions");
+
+
+/* =====================================================
+   FECHAS
+===================================================== */
+
+let departureDate=null;
+let returnDate=null;
+let selectingDate="departure";
+
+let calendarDate=new Date();
+calendarDate.setDate(1);
+
+let flexibleType=null;
+let flexibleDays=null;
+let selectedMonth=null;
+
+const calendar=document.getElementById("calendar");
+const calendarGrid=document.getElementById("calendarGrid");
+const calendarMonth=document.getElementById("calendarMonth");
+
+const departureBox=document.getElementById("departureBox");
+const returnBox=document.getElementById("returnBox");
+
+const departureText=document.getElementById("departureText");
+const returnText=document.getElementById("returnText");
+
+const concreteDates=document.getElementById("concreteDates");
+const flexibleDates=document.getElementById("flexibleDates");
+
+const flexibleOptions=document.getElementById("flexibleOptions");
+
+const monthSelector=document.getElementById("monthSelector");
+
+
+function formatDate(date){
+
+    return date.toLocaleDateString("es-ES",{
+        day:"2-digit",
+        month:"2-digit",
+        year:"numeric"
+    });
+
+}
+
+
+function dateKey(date){
+
+    return date.toISOString().split("T")[0];
+
+}
+
+
+function renderCalendar(){
+
+    calendarGrid.innerHTML="";
+
+    const year=calendarDate.getFullYear();
+    const month=calendarDate.getMonth();
+
+    calendarMonth.textContent=
+        calendarDate.toLocaleDateString("es-ES",{
+            month:"long",
+            year:"numeric"
+        });
+
+    let firstDay=new Date(year,month,1).getDay();
+
+    firstDay=firstDay===0?6:firstDay-1;
+
+    const days=new Date(year,month+1,0).getDate();
+
+    for(let i=0;i<firstDay;i++){
+
+        calendarGrid.appendChild(
+            document.createElement("div")
+        );
+
+    }
+
+    const today=new Date();
+    today.setHours(0,0,0,0);
+
+    for(let day=1;day<=days;day++){
+
+        const date=new Date(year,month,day);
+
+        date.setHours(0,0,0,0);
+
+        const el=document.createElement("div");
+
+        el.className="day";
+
+        el.textContent=day;
+
+        if(date<today){
+
+            el.classList.add("disabled");
+
+        }else{
+
+            if(
+                departureDate &&
+                dateKey(date)===dateKey(departureDate)
+            ){
+                el.classList.add("selected");
+            }
+
+            if(
+                returnDate &&
+                dateKey(date)===dateKey(returnDate)
+            ){
+                el.classList.add("selected");
+            }
+
+            if(
+                departureDate &&
+                returnDate &&
+                date>departureDate &&
+                date<returnDate
+            ){
+                el.classList.add("in-range");
+            }
+
+            if(dateKey(date)===dateKey(today)){
+                el.classList.add("today");
+            }
+
+            el.addEventListener("click",()=>selectDate(date));
+
+        }
+
+        calendarGrid.appendChild(el);
+
+    }
+
+}
+
+
+function selectDate(date){
+
+    if(selectingDate==="departure"){
+
+        departureDate=date;
+        returnDate=null;
+
+        departureText.textContent=formatDate(date);
+        returnText.textContent="Seleccionar";
+
+        selectingDate="return";
+
+        departureBox.classList.remove("active");
+        returnBox.classList.add("active");
+
+    }else{
+
+        if(departureDate && date<departureDate){
+
+            alert("La vuelta no puede ser anterior a la ida.");
+            return;
+
+        }
+
+        returnDate=date;
+
+        returnText.textContent=formatDate(date);
+
+        calendar.classList.remove("show");
+
+    }
+
+    renderCalendar();
+    updateSearchButton();
+
+}
+
+
+departureBox.addEventListener("click",function(){
+
+    selectingDate="departure";
+
+    departureBox.classList.add("active");
+    returnBox.classList.remove("active");
+
+    calendar.classList.add("show");
+
+    monthSelector.classList.remove("show");
+
+    renderCalendar();
+
+});
+
+
+returnBox.addEventListener("click",function(){
+
+    if(!departureDate){
+
+        departureBox.click();
+        return;
+
+    }
+
+    selectingDate="return";
+
+    departureBox.classList.remove("active");
+    returnBox.classList.add("active");
+
+    calendar.classList.add("show");
+
+    monthSelector.classList.remove("show");
+
+    renderCalendar();
+
+});
+
+
+document.getElementById("prevMonth")
+.addEventListener("click",function(){
+
+    calendarDate.setMonth(calendarDate.getMonth()-1);
+
+    renderCalendar();
+
+});
+
+
+document.getElementById("nextMonth")
+.addEventListener("click",function(){
+
+    calendarDate.setMonth(calendarDate.getMonth()+1);
+
+    renderCalendar();
+
+});
+
+
+/* =====================================================
+   FECHAS FLEXIBLES
+===================================================== */
+
+concreteDates.addEventListener("click",function(){
+
+    concreteDates.classList.add("selected");
+    flexibleDates.classList.remove("selected");
+
+    flexibleOptions.classList.remove("show");
+    document.getElementById("concreteDateBoxes").style.display="block";
+
+    flexibleType=null;
+    flexibleDays=null;
+    selectedMonth=null;
+    const chooseMonthReset=document.getElementById("chooseMonth");
+    if(chooseMonthReset){
+        chooseMonthReset.textContent="¿Qué mes quieres ir?";
+        chooseMonthReset.classList.remove("selected");
+    }
+    const otherDaysReset=document.getElementById("otherDaysSelector");
+    if(otherDaysReset) otherDaysReset.style.display="none";
+
+    calendar.classList.remove("show");
+    monthSelector.classList.remove("show");
+
+    updateSearchButton();
+});
+
+
+flexibleDates.addEventListener("click",function(){
+
+    flexibleDates.classList.add("selected");
+    concreteDates.classList.remove("selected");
+
+    flexibleOptions.classList.add("show");
+    document.getElementById("concreteDateBoxes").style.display="none";
+
+    calendar.classList.remove("show");
+
+    updateSearchButton();
+});
+
+
+document.querySelectorAll(".date-option[data-flex]")
+.forEach(button=>{
+
+    button.addEventListener("click",function(){
+
+        document.querySelectorAll(".date-option[data-flex]")
+        .forEach(b=>b.classList.remove("selected"));
+
+        this.classList.add("selected");
+
+        flexibleType=this.dataset.flex;
+
+        const otherDaysSelector=document.getElementById("otherDaysSelector");
+        if(otherDaysSelector){
+            otherDaysSelector.style.display = flexibleType==="other" ? "block" : "none";
+        }
+
+        if(flexibleType!=="other") flexibleDays=null;
+
+        updateSearchButton();
+
+    });
+
+});
+
+
+document.getElementById("chooseMonth")
+.addEventListener("click",function(){
+
+    monthSelector.classList.add("show");
+    this.classList.add("selected");
+
+});
+
+
+document.getElementById("otherDays")
+.addEventListener("change",function(){
+    flexibleDays=this.value==="" ? null : parseInt(this.value);
+    updateSearchButton();
+});
+
+
+document.querySelectorAll(".month")
+.forEach(button=>{
+
+    button.addEventListener("click",function(){
+
+        document.querySelectorAll(".month")
+        .forEach(b=>b.classList.remove("selected"));
+
+        this.classList.add("selected");
+
+        selectedMonth=parseInt(this.dataset.month);
+
+        const chooseMonth=document.getElementById("chooseMonth");
+        if(chooseMonth){
+            chooseMonth.classList.add("selected");
+            chooseMonth.textContent="Mes: "+this.textContent.trim();
+        }
+
+        monthSelector.classList.remove("show");
+
+        updateSearchButton();
+
+    });
+
+});
+
+
+/* =====================================================
+   HABITACIONES Y PERSONAS
+===================================================== */
+
+let rooms=0;
+let roomData=[];
+
+const roomsInput=document.getElementById("roomsInput");
+const roomsPopup=document.getElementById("roomsPopup");
+
+roomsInput.addEventListener("click",function(e){
+    e.stopPropagation();
+    roomsPopup.classList.toggle("show");
+    renderRooms();
+});
+
+document.getElementById("roomsPlus")
+.addEventListener("click",function(e){
+    e.stopPropagation();
+
+    rooms++;
+
+    roomData.push({
+        adults:1,
+        children:[]
+    });
+
+    updateRooms();
+});
+
+document.getElementById("roomsMinus")
+.addEventListener("click",function(e){
+    e.stopPropagation();
+
+    if(rooms>0){
+        rooms--;
+        roomData.pop();
+    }
+
+    updateRooms();
+});
+
+function updateRooms(){
+
+    document.getElementById("roomsNumber").textContent=rooms;
+
+    document.getElementById("roomsText").textContent=
+        rooms===0
+        ? "0 habitaciones"
+        : rooms===1
+        ? "1 habitación"
+        : `${rooms} habitaciones`;
+
+    renderRooms();
+    updateSearchButton();
+}
+
+function renderRooms(){
+
+    const container=document.getElementById("roomConfig");
+
+    container.innerHTML="";
+
+    if(rooms===0){
+        container.classList.remove("show");
+        return;
+    }
+
+    container.classList.add("show");
+
+    roomData.forEach((room,index)=>{
+
+        const card=document.createElement("div");
+        card.className="room-card";
+
+        card.innerHTML=`
+
+            <h4>Habitación ${index+1}</h4>
+
+            <div class="counter-row">
+
+                <div class="counter-title">
+                    <strong>Adultos</strong>
+                    <span>18 años o más</span>
+                </div>
+
+                <div class="counter">
+
+                    <button
+                        type="button"
+                        class="room-adult-minus">
+                        −
+                    </button>
+
+                    <span class="counter-number">
+                        ${room.adults}
+                    </span>
+
+                    <button
+                        type="button"
+                        class="room-adult-plus">
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="counter-row">
+
+                <div class="counter-title">
+                    <strong>Niños</strong>
+                    <span>De 0 a 17 años</span>
+                </div>
+
+                <div class="counter">
+
+                    <button
+                        type="button"
+                        class="room-child-minus">
+                        −
+                    </button>
+
+                    <span class="counter-number">
+                        ${room.children.length}
+                    </span>
+
+                    <button
+                        type="button"
+                        class="room-child-plus">
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+        const adultMinus=card.querySelector(".room-adult-minus");
+        const adultPlus=card.querySelector(".room-adult-plus");
+        const childMinus=card.querySelector(".room-child-minus");
+        const childPlus=card.querySelector(".room-child-plus");
+
+        adultMinus.onclick=function(e){
+            e.stopPropagation();
+
+            if(room.adults>1){
+                room.adults--;
+                renderRooms();
+                updateRoomsSummary();
+                updateSearchButton();
+            }
+        };
+
+        adultPlus.onclick=function(e){
+            e.stopPropagation();
+
+            room.adults++;
+            renderRooms();
+            updateRoomsSummary();
+            updateSearchButton();
+        };
+
+        childMinus.onclick=function(e){
+            e.stopPropagation();
+
+            if(room.children.length>0){
+                room.children.pop();
+                renderRooms();
+                updateRoomsSummary();
+                updateSearchButton();
+            }
+        };
+
+        childPlus.onclick=function(e){
+            e.stopPropagation();
+
+            room.children.push(null);
+            renderRooms();
+            updateRoomsSummary();
+            updateSearchButton();
+        };
+
+        if(room.children.length){
+
+            const title=document.createElement("div");
+            title.className="room-age-title";
+            title.textContent="Edad de los niños:";
+
+            card.appendChild(title);
+
+            room.children.forEach((age,childIndex)=>{
+
+                const select=document.createElement("select");
+                select.className="room-age";
+
+                select.innerHTML=
+                    `<option value="">Niño ${childIndex+1}</option>`+
+                    Array.from(
+                        {length:18},
+                        (_,ageIndex)=>
+                        `<option value="${ageIndex}">
+                            ${ageIndex} años
+                        </option>`
+                    ).join("");
+
+                if(age!==null){
+                    select.value=age;
+                }
+
+                select.addEventListener("change",function(e){
+
+                    e.stopPropagation();
+
+                    room.children[childIndex]=
+                        this.value===""
+                        ? null
+                        : parseInt(this.value);
+
+                    updateSearchButton();
+                });
+
+                card.appendChild(select);
+            });
+        }
+
+        container.appendChild(card);
+    });
+}
+
+function updateRoomsSummary(){
+
+    let totalAdults=0;
+    let totalChildren=0;
+
+    roomData.forEach(room=>{
+        totalAdults+=room.adults;
+        totalChildren+=room.children.length;
+    });
+
+    if(rooms===0){
+        document.getElementById("roomsText").textContent="0 habitaciones";
+        return;
+    }
+
+    let text=
+        `${rooms} habitación${rooms!==1?"es":""} · `+
+        `${totalAdults} adulto${totalAdults!==1?"s":""}`;
+
+    if(totalChildren){
+        text+=
+            `, ${totalChildren} niño${totalChildren!==1?"s":""}`;
+    }
+
+    document.getElementById("roomsText").textContent=text;
+}
+
+/* =====================================================
+   VALIDACIÓN
+===================================================== */
+
+const searchButton=
+    document.getElementById("searchButton");
+
+
+function childrenHaveAge(){
+
+    return roomData.every(room=>
+        room.children.every(age=>age!==null)
+    );
+
+}
+
+
+function flexibleIsValid(){
+
+    if(!flexibleDates.classList.contains("selected")){
+        return true;
+    }
+
+    if(!flexibleType){
+        return false;
+    }
+
+    if(flexibleType==="month"){
+        return selectedMonth!==null;
+    }
+
+    return true;
+
+}
+
+
+function updateSearchButton(){
+
+    const origin=
+        document.getElementById("originInput")
+        .value.trim();
+
+    const destination=
+        document.getElementById("destinationInput")
+        .value.trim();
+
+
+    let datesValid=false;
+
+
+    if(concreteDates.classList.contains("selected")){
+
+        datesValid=
+            departureDate!==null &&
+            returnDate!==null;
+
+    }else{
+
+        datesValid=flexibleIsValid();
+
+    }
+
+
+    let valid=
+        origin!=="" &&
+        destination!=="" &&
+        datesValid &&
+        rooms>0 &&
+        childrenHaveAge();
+
+
+    if(document.getElementById("multiDestination").checked){
+
+        const o2=
+            document.getElementById("origin2")
+            .value.trim();
+
+        const d2=
+            document.getElementById("destination2")
+            .value.trim();
+
+        let multiDatesValid=false;
+
+        if(document.getElementById("concreteDates2").classList.contains("selected")){
+            multiDatesValid=
+                departureDate2!==null &&
+                returnDate2!==null;
+        }else{
+            multiDatesValid=flexibleIsValid2();
+        }
+
+        valid=
+            valid &&
+            o2!=="" &&
+            d2!=="" &&
+            multiDatesValid;
+
+    }
+
+
+    searchButton.disabled=!valid;
+
+}
+
+
+/* =====================================================
+   MULTIDESTINO
+===================================================== */
+
+const multiDestination=document.getElementById("multiDestination");
+const multiTrip=document.getElementById("multiTrip");
+
+let departureDate2=null;
+let returnDate2=null;
+let flexibleType2=null;
+let flexibleDays2=null;
+let selectedMonth2=null;
+let selectingDate2="departure";
+let calendarDate2=new Date();
+calendarDate2.setDate(1);
+
+multiDestination.addEventListener("change",function(){
+
+    multiTrip.classList.toggle("show",this.checked);
+
+    if(this.checked){
+        setupAutocomplete("origin2","origin2Suggestions");
+        setupAutocomplete("destination2","destination2Suggestions");
+    }
+
+    updateSearchButton();
+});
+
+function renderCalendar2(){
+
+    // El segundo viaje utiliza los mismos estilos de calendario.
+    // Se crea uno dentro del campo multidestino.
+    let calendar2=document.getElementById("calendar2");
+
+    if(!calendar2){
+        calendar2=document.createElement("div");
+        calendar2.className="calendar";
+        calendar2.id="calendar2";
+
+        calendar2.innerHTML=`
+            <div class="calendar-head">
+                <button type="button" id="prevMonth2">‹</button>
+                <div class="calendar-month" id="calendarMonth2"></div>
+                <button type="button" id="nextMonth2">›</button>
+            </div>
+
+            <div class="weekdays">
+                <div>L</div><div>M</div><div>X</div>
+                <div>J</div><div>V</div><div>S</div><div>D</div>
+            </div>
+
+            <div class="calendar-grid" id="calendarGrid2"></div>
+        `;
+
+        document.querySelector(".multi-date-field").appendChild(calendar2);
+
+        document.getElementById("prevMonth2").onclick=function(e){
+            e.stopPropagation();
+            calendarDate2.setMonth(calendarDate2.getMonth()-1);
+            renderCalendar2();
+        };
+
+        document.getElementById("nextMonth2").onclick=function(e){
+            e.stopPropagation();
+            calendarDate2.setMonth(calendarDate2.getMonth()+1);
+            renderCalendar2();
+        };
+    }
+
+    const grid=document.getElementById("calendarGrid2");
+    const title=document.getElementById("calendarMonth2");
+
+    grid.innerHTML="";
+
+    const year=calendarDate2.getFullYear();
+    const month=calendarDate2.getMonth();
+
+    title.textContent=calendarDate2.toLocaleDateString("es-ES",{
+        month:"long",
+        year:"numeric"
+    });
+
+    let firstDay=new Date(year,month,1).getDay();
+    firstDay=firstDay===0?6:firstDay-1;
+
+    const days=new Date(year,month+1,0).getDate();
+
+    for(let i=0;i<firstDay;i++){
+        grid.appendChild(document.createElement("div"));
+    }
+
+    const today=new Date();
+    today.setHours(0,0,0,0);
+
+    for(let day=1;day<=days;day++){
+
+        const date=new Date(year,month,day);
+        date.setHours(0,0,0,0);
+
+        const el=document.createElement("div");
+        el.className="day";
+        el.textContent=day;
+
+        if(date<today){
+            el.classList.add("disabled");
+        }else{
+
+            if(departureDate2 && dateKey(date)===dateKey(departureDate2)){
+                el.classList.add("selected");
+            }
+
+            if(returnDate2 && dateKey(date)===dateKey(returnDate2)){
+                el.classList.add("selected");
+            }
+
+            if(
+                departureDate2 &&
+                returnDate2 &&
+                date>departureDate2 &&
+                date<returnDate2
+            ){
+                el.classList.add("in-range");
+            }
+
+            if(dateKey(date)===dateKey(today)){
+                el.classList.add("today");
+            }
+
+            el.addEventListener("click",()=>selectDate2(date));
+        }
+
+        grid.appendChild(el);
+    }
+}
+
+function selectDate2(date){
+
+    if(selectingDate2==="departure"){
+
+        departureDate2=date;
+        returnDate2=null;
+
+        document.getElementById("departureText2").textContent=formatDate(date);
+        document.getElementById("returnText2").textContent="Seleccionar";
+
+        selectingDate2="return";
+
+        document.getElementById("departureBox2").classList.remove("active");
+        document.getElementById("returnBox2").classList.add("active");
+
+    }else{
+
+        if(departureDate2 && date<departureDate2){
+            alert("La vuelta no puede ser anterior a la ida.");
+            return;
+        }
+
+        returnDate2=date;
+
+        document.getElementById("returnText2").textContent=formatDate(date);
+
+        const calendar2=document.getElementById("calendar2");
+        if(calendar2) calendar2.classList.remove("show");
+    }
+
+    renderCalendar2();
+    updateSearchButton();
+}
+
+document.getElementById("concreteDates2").addEventListener("click",function(e){
+
+    e.stopPropagation();
+
+    this.classList.add("selected");
+    document.getElementById("flexibleDates2").classList.remove("selected");
+
+    document.getElementById("flexibleOptions2").classList.remove("show");
+    document.getElementById("concreteDate2Box").style.display="block";
+
+    flexibleType2=null;
+    flexibleDays2=null;
+    selectedMonth2=null;
+    const chooseMonthReset2=document.getElementById("chooseMonth2");
+    if(chooseMonthReset2){
+        chooseMonthReset2.textContent="¿Qué mes quieres ir?";
+        chooseMonthReset2.classList.remove("selected");
+    }
+    const otherDaysReset2=document.getElementById("otherDaysSelector2");
+    if(otherDaysReset2) otherDaysReset2.style.display="none";
+
+    const calendar2=document.getElementById("calendar2");
+    if(calendar2) calendar2.classList.remove("show");
+
+    updateSearchButton();
+});
+
+document.getElementById("flexibleDates2").addEventListener("click",function(e){
+
+    e.stopPropagation();
+
+    this.classList.add("selected");
+    document.getElementById("concreteDates2").classList.remove("selected");
+
+    document.getElementById("flexibleOptions2").classList.add("show");
+    document.getElementById("concreteDate2Box").style.display="none";
+
+    const calendar2=document.getElementById("calendar2");
+    if(calendar2) calendar2.classList.remove("show");
+
+    updateSearchButton();
+});
+
+document.querySelectorAll(".date-option[data-flex2]").forEach(button=>{
+
+    button.addEventListener("click",function(e){
+
+        e.stopPropagation();
+
+        document.querySelectorAll(".date-option[data-flex2]")
+            .forEach(b=>b.classList.remove("selected"));
+
+        this.classList.add("selected");
+
+        flexibleType2=this.dataset.flex2;
+
+        const otherDaysSelector2=document.getElementById("otherDaysSelector2");
+        if(otherDaysSelector2){
+            otherDaysSelector2.style.display = flexibleType2==="other" ? "block" : "none";
+        }
+
+        if(flexibleType2!=="other") flexibleDays2=null;
+
+        updateSearchButton();
+    });
+});
+
+document.getElementById("chooseMonth2").addEventListener("click",function(e){
+
+    e.stopPropagation();
+
+    document.getElementById("monthSelector2").classList.add("show");
+    this.classList.add("selected");
+
+    updateSearchButton();
+});
+
+document.getElementById("otherDays2").addEventListener("change",function(){
+    flexibleDays2=this.value==="" ? null : parseInt(this.value);
+    updateSearchButton();
+});
+
+document.querySelectorAll(".month[data-month2]").forEach(button=>{
+
+    button.addEventListener("click",function(e){
+
+        e.stopPropagation();
+
+        document.querySelectorAll(".month[data-month2]")
+            .forEach(b=>b.classList.remove("selected"));
+
+        this.classList.add("selected");
+
+        selectedMonth2=parseInt(this.dataset.month2);
+
+        const chooseMonth2=document.getElementById("chooseMonth2");
+        if(chooseMonth2){
+            chooseMonth2.classList.add("selected");
+            chooseMonth2.textContent="Mes: "+this.textContent.trim();
+        }
+
+        document.getElementById("monthSelector2").classList.remove("show");
+
+        updateSearchButton();
+    });
+});
+
+document.getElementById("departureBox2").addEventListener("click",function(e){
+
+    e.stopPropagation();
+
+    if(!document.getElementById("concreteDates2").classList.contains("selected")){
+        return;
+    }
+
+    selectingDate2="departure";
+
+    this.classList.add("active");
+    document.getElementById("returnBox2").classList.remove("active");
+
+    let calendar2=document.getElementById("calendar2");
+
+    if(!calendar2){
+        renderCalendar2();
+        calendar2=document.getElementById("calendar2");
+    }
+
+    calendar2.classList.add("show");
+    renderCalendar2();
+});
+
+document.getElementById("returnBox2").addEventListener("click",function(e){
+
+    e.stopPropagation();
+
+    if(!departureDate2){
+        document.getElementById("departureBox2").click();
+        return;
+    }
+
+    if(!document.getElementById("concreteDates2").classList.contains("selected")){
+        return;
+    }
+
+    selectingDate2="return";
+
+    document.getElementById("departureBox2").classList.remove("active");
+    this.classList.add("active");
+
+    let calendar2=document.getElementById("calendar2");
+
+    if(!calendar2){
+        renderCalendar2();
+        calendar2=document.getElementById("calendar2");
+    }
+
+    calendar2.classList.add("show");
+    renderCalendar2();
+});
+
+function flexibleIsValid2(){
+
+    if(!document.getElementById("flexibleDates2").classList.contains("selected")){
+        return true;
+    }
+
+    if(!flexibleType2){
+        return false;
+    }
+
+    if(flexibleType2==="month"){
+        return selectedMonth2!==null;
+    }
+
+    return true;
+}
+
+/* =====================================================
+   BUSCAR
+===================================================== */
+
+searchButton.addEventListener("click",function(){
+
+    if(searchButton.disabled){
+        return;
+    }
+
+
+    const totalAdults=
+        roomData.reduce(
+            (sum,room)=>sum+room.adults,
+            0
+        );
+
+
+    const totalChildren=
+        roomData.reduce(
+            (sum,room)=>sum+room.children.length,
+            0
+        );
+
+
+    const searchData={
+
+        origin:
+            document.getElementById("originInput").value,
+
+        destination:
+            document.getElementById("destinationInput").value,
+
+        dateType:
+            concreteDates.classList.contains("selected")
+            ? "concrete"
+            : "flexible",
+
+        departure:
+            departureDate
+            ? dateKey(departureDate)
+            : null,
+
+        return:
+            returnDate
+            ? dateKey(returnDate)
+            : null,
+
+        flexibleType:flexibleType,
+
+        selectedMonth:selectedMonth,
+
+        rooms:rooms,
+
+        adults:totalAdults,
+
+        children:totalChildren,
+
+        roomData:roomData,
+
+        multidestination:
+            document.getElementById("multiDestination").checked,
+
+        origin2:
+            document.getElementById("origin2").value,
+
+        destination2:
+            document.getElementById("destination2").value,
+
+        departure2:
+            departureDate2
+            ? dateKey(departureDate2)
+            : null,
+
+        return2:
+            returnDate2
+            ? dateKey(returnDate2)
+            : null,
+
+        flexibleType2:flexibleType2,
+        flexibleDays2:flexibleDays2,
+        selectedMonth2:selectedMonth2
+
+    };
+
+
+    localStorage.setItem(
+        "ultimaBusqueda",
+        JSON.stringify(searchData)
+    );
+
+
+    window.open(
+        "contacto.html",
+        "_blank"
+    );
+
+});
+
+
+/* =====================================================
+   CERRAR
+===================================================== */
+
+document.addEventListener("click",function(e){
+
+    if(!e.target.closest(".popup-field")){
+
+        roomsPopup.classList.remove("show");
+    }
+
+    if(!e.target.closest(".date-field") && !e.target.closest(".multi-date-field")){
+
+        calendar.classList.remove("show");
+        monthSelector.classList.remove("show");
+
+        const calendar2=document.getElementById("calendar2");
+        if(calendar2) calendar2.classList.remove("show");
+
+        const monthSelector2=document.getElementById("monthSelector2");
+        if(monthSelector2) monthSelector2.classList.remove("show");
+    }
+
+});
+
+
+/* =====================================================
+   INPUTS
+===================================================== */
+
+document.querySelectorAll("input")
+.forEach(input=>{
+
+    input.addEventListener(
+        "input",
+        updateSearchButton
+    );
+
+});
+
+
+updateRoomsSummary();
+renderRooms();
+renderCalendar();
+updateSearchButton();
+
+</script>
+
+</body>
+</html>
+```
