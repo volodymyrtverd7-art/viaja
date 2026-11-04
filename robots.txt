@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://volodymyrtverd7-art.github.io/viaja/sitemap.xml
