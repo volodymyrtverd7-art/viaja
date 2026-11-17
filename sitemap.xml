@@ -1,0 +1,57 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- INICIO -->
+  <url>
+    <loc>https://volodymyrtverd7-art.github.io/viaja/</loc>
+  </url>
+
+  <!-- DESTINOS -->
+  <url>
+    <loc>https://volodymyrtverd7-art.github.io/viaja/roma.html</loc>
+  </url>
+  <url>
+    <loc>https://volodymyrtverd7-art.github.io/viaja/paris.html</loc>
+  </url>
+  <url>
+    <loc>https://volodymyrtverd7-art.github.io/viaja/londres.html</loc>
+  </url>
+  <url>
+    <loc>https://volodymyrtverd7-art.github.io/viaja/mallorca.html</loc>
+  </url>
+
+  <!-- PARQUES TEMATICOS -->
+  <url>
+    <loc>https://volodymyrtverd7-art.github.io/viaja/portaventura.html</loc>
+  </url>
+  <url>
+    <loc>https://volodymyrtverd7-art.github.io/viaja/disneyland-paris.html</loc>
+  </url>
+  <url>
+    <loc>https://volodymyrtverd7-art.github.io/viaja/parque-warner.html</loc>
+  </url>
+  <url>
+    <loc>https://volodymyrtverd7-art.github.io/viaja/puy-du-fou.html</loc>
+  </url>
+
+  <!-- ESCAPADAS -->
+  <url>
+    <loc>https://volodymyrtverd7-art.github.io/viaja/san-valentin.html</loc>
+  </url>
+  <url>
+    <loc>https://volodymyrtverd7-art.github.io/viaja/semana-santa.html</loc>
+  </url>
+  <url>
+    <loc>https://volodymyrtverd7-art.github.io/viaja/verano.html</loc>
+  </url>
+  <url>
+    <loc>https://volodymyrtverd7-art.github.io/viaja/navidad.html</loc>
+  </url>
+
+  <!-- AYUDA -->
+  <url>
+    <loc>https://volodymyrtverd7-art.github.io/viaja/ayuda.html</loc>
+  </url>
+
+</urlset>
